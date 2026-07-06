@@ -117,20 +117,24 @@ mark{background:#ffe27a;padding:0 2px}
   <input class="find" id="find" type="search" placeholder="FILTER… (e.g. freight)" aria-label="Filter the guide">
   <div class="grp">Sales</div>
   <a href="#quotes"><span class="no">01</span>Quotes &amp; Order Numbers</a>
-  <a href="#confirmation"><span class="no">02</span>Order Confirmation Emails</a>
+  <a href="#categories"><span class="no">02</span>Customer Categories</a>
+  <a href="#credit"><span class="no">03</span>Credit Applications</a>
+  <a href="#confirmation"><span class="no">04</span>Order Confirmation Emails</a>
   <div class="grp">Freight</div>
-  <a href="#freight-form"><span class="no">03</span>Freight Forms</a>
-  <a href="#parts-freight"><span class="no">04</span>Parts Freight (UPS Ground)</a>
+  <a href="#freight-form"><span class="no">05</span>Freight Forms</a>
+  <a href="#parts-freight"><span class="no">06</span>Parts Freight (UPS Ground)</a>
   <div class="grp">Fulfillment</div>
-  <a href="#dropship"><span class="no">05</span>Drop Shipping &amp; Purchasing</a>
-  <a href="#warehouse"><span class="no">06</span>Deliveries &amp; Packing Slips</a>
+  <a href="#dropship"><span class="no">07</span>Drop Shipping &amp; Purchasing</a>
+  <a href="#warehouse"><span class="no">08</span>Deliveries &amp; Packing Slips</a>
   <div class="grp">Catalog &amp; Money</div>
-  <a href="#products"><span class="no">07</span>Products</a>
-  <a href="#onboarding"><span class="no">08</span>Customer Onboarding</a>
-  <a href="#payments"><span class="no">09</span>Payments</a>
-  <a href="#notifications"><span class="no">10</span>Notifications</a>
+  <a href="#products"><span class="no">09</span>Products</a>
+  <a href="#onboarding"><span class="no">10</span>Customer Onboarding</a>
+  <a href="#terms"><span class="no">11</span>Payment Terms &amp; Holds</a>
+  <a href="#payments"><span class="no">12</span>Paying an Order</a>
+  <a href="#invoicing"><span class="no">13</span>Invoicing &amp; Down Payments</a>
+  <a href="#notifications"><span class="no">14</span>Notifications</a>
   <div class="grp">History</div>
-  <a href="#changelog"><span class="no">11</span>Changelog</a>
+  <a href="#changelog"><span class="no">15</span>Changelog</a>
 </nav>
 
 <main id="main">
@@ -159,9 +163,81 @@ mark{background:#ffe27a;padding:0 2px}
   </div>
 </section>
 
-<!-- ============================ 02 CONFIRMATION ============================ -->
+<!-- ============================ 02 CATEGORIES ============================ -->
+<section id="categories">
+  <div class="sec-head"><span class="no">§02</span><h2>Customer Categories</h2></div>
+  <p class="sec-lede">Every customer carries a category (NC / RC / DC codes) that drives their discount, which payment terms they can be offered, and which steps their orders require.</p>
+
+  <div class="card">
+    <h3>What the category controls</h3>
+    <div class="lbl">What it does</div>
+    <ul>
+      <li>The quote shows a one-line summary under <span class="chip">Customer Category</span> — discount, lead terms, and any required steps (credit app, manager approval, signature).</li>
+      <li>The category's <b>discount</b> applies to every order line automatically, including lines added later.</li>
+      <li>The category's <b>allowed payment terms</b> become the only terms selectable on the order.</li>
+      <li>Required steps show as badges under <span class="path">Other Info → Required Steps</span> on the order.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>How customers move through categories</h3>
+    <div class="lbl">What it does</div>
+    <ul>
+      <li>A brand-new customer with no order history defaults to <span class="chip">NC1</span> (pay-on-order) when you quote them.</li>
+      <li>When their first order confirms, new-customer categories <b>auto-promote</b> to the matching returning-customer category — you'll see a note on the contact's log.</li>
+      <li>Contacts show a status badge: <b>New</b> (no quotes yet), <b>Shopper</b> (quoted, never ordered), <b>Customer</b> (has ordered).</li>
+    </ul>
+    <div class="lbl">How to use it</div>
+    <ul>
+      <li>Set a customer's category on their contact card, <span class="path">Redline</span> tab. Setting it there also copies the category's payment terms onto the customer.</li>
+      <li>Managers maintain the categories themselves at <span class="path">Sales → Orders → Customer Categories</span>.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============================ 03 CREDIT APPLICATIONS ============================ -->
+<section id="credit">
+  <div class="sec-head"><span class="no">§03</span><h2>Credit Applications</h2></div>
+  <p class="sec-lede">An online application the customer completes from an emailed link. Approval unlocks the requested payment term on their account.</p>
+
+  <div class="card">
+    <h3>Sending one</h3>
+    <div class="lbl">How to use it</div>
+    <ul>
+      <li>On a quote whose category requires it, hit <span class="chip red">Credit Application</span> — it creates the application prefilled from the customer.</li>
+      <li>Set <span class="chip">Requested Terms</span> (the payment term they're applying for), then <span class="chip red">Send to Customer</span> — an email window opens with their personal link; nothing sends until you click Send.</li>
+      <li>Applications also live at <span class="path">Sales → Orders → Credit Applications</span>, and the order gets a <span class="chip">Credit Apps</span> counter button.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>What the customer fills out</h3>
+    <div class="lbl">What it does</div>
+    <ul>
+      <li>The portal page "Application for Credit" asks for business contact info, bank and credit info, three trade references, optional supporting documents, and a typed signature accepting the terms and conditions.</li>
+      <li>Only company name, signature, and the agreement checkbox are strictly required — they can leave the rest blank.</li>
+      <li>When they submit, the salesperson on the order gets notified and the application moves to <b>Submitted</b>.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>Approving or declining</h3>
+    <div class="lbl">How to use it</div>
+    <ul>
+      <li>A <b>Sales Manager</b> reviews the submitted application and clicks <span class="chip red">Approve</span> or <span class="chip">Decline</span> (with an optional reason).</li>
+      <li>Approving adds the <b>Requested Terms</b> to the customer's allowed payment terms — their future quotes can offer it immediately.</li>
+    </ul>
+    <div class="lbl">Good to know</div>
+    <ul>
+      <li>The customer is <b>not emailed automatically</b> on approval or decline — let them know yourself.</li>
+      <li>Set Requested Terms <b>before</b> approving; approval without it doesn't unlock anything.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============================ 04 CONFIRMATION ============================ -->
 <section id="confirmation">
-  <div class="sec-head"><span class="no">§02</span><h2>Order Confirmation Emails</h2></div>
+  <div class="sec-head"><span class="no">§04</span><h2>Order Confirmation Emails</h2></div>
 
   <div class="card">
     <h3>Who gets emailed, and when</h3>
@@ -177,9 +253,9 @@ mark{background:#ffe27a;padding:0 2px}
   </div>
 </section>
 
-<!-- ============================ 03 FREIGHT FORMS ============================ -->
+<!-- ============================ 05 FREIGHT FORMS ============================ -->
 <section id="freight-form">
-  <div class="sec-head"><span class="no">§03</span><h2>Freight Forms</h2></div>
+  <div class="sec-head"><span class="no">§05</span><h2>Freight Forms</h2></div>
   <p class="sec-lede">The freight form replaces the old QuickBooks freight sheet: one place to quote a load with the broker, track his rate, and put the freight charge on the order.</p>
 
   <div class="card">
@@ -246,9 +322,9 @@ mark{background:#ffe27a;padding:0 2px}
   </div>
 </section>
 
-<!-- ============================ 04 PARTS FREIGHT ============================ -->
+<!-- ============================ 06 PARTS FREIGHT ============================ -->
 <section id="parts-freight">
-  <div class="sec-head"><span class="no">§04</span><h2>Parts Freight (UPS Ground)</h2></div>
+  <div class="sec-head"><span class="no">§06</span><h2>Parts Freight (UPS Ground)</h2></div>
 
   <div class="card">
     <h3>Auto-calculated parts shipping</h3>
@@ -265,9 +341,9 @@ mark{background:#ffe27a;padding:0 2px}
   </div>
 </section>
 
-<!-- ============================ 05 DROPSHIP ============================ -->
+<!-- ============================ 07 DROPSHIP ============================ -->
 <section id="dropship">
-  <div class="sec-head"><span class="no">§05</span><h2>Drop Shipping &amp; Purchasing</h2></div>
+  <div class="sec-head"><span class="no">§07</span><h2>Drop Shipping &amp; Purchasing</h2></div>
   <p class="sec-lede">Splitting a confirmed order between the warehouse and vendor drop-shipments, without the warehouse ever shipping something twice.</p>
 
   <div class="card">
@@ -303,11 +379,20 @@ mark{background:#ffe27a;padding:0 2px}
       <li>If something can't be fixed automatically, the salesperson gets a note telling them exactly what to check by hand.</li>
     </ul>
   </div>
+
+  <div class="card">
+    <h3>Editing a confirmed purchase order</h3>
+    <div class="lbl">What it does</div>
+    <ul>
+      <li>The <b>Product</b> on a purchase order line stays editable after the PO is confirmed — call the vendor, add the extra item to the same PO, done.</li>
+      <li>It stays locked on cancelled POs, POs waiting for approval, and down-payment lines.</li>
+    </ul>
+  </div>
 </section>
 
-<!-- ============================ 06 WAREHOUSE ============================ -->
+<!-- ============================ 08 WAREHOUSE ============================ -->
 <section id="warehouse">
-  <div class="sec-head"><span class="no">§06</span><h2>Deliveries &amp; Packing Slips</h2></div>
+  <div class="sec-head"><span class="no">§08</span><h2>Deliveries &amp; Packing Slips</h2></div>
 
   <div class="card">
     <h3>What the warehouse sees</h3>
@@ -324,9 +409,9 @@ mark{background:#ffe27a;padding:0 2px}
   </div>
 </section>
 
-<!-- ============================ 07 PRODUCTS ============================ -->
+<!-- ============================ 09 PRODUCTS ============================ -->
 <section id="products">
-  <div class="sec-head"><span class="no">§07</span><h2>Products</h2></div>
+  <div class="sec-head"><span class="no">§09</span><h2>Products</h2></div>
 
   <div class="card">
     <h3>The right description in the right app</h3>
@@ -352,27 +437,85 @@ mark{background:#ffe27a;padding:0 2px}
   </div>
 </section>
 
-<!-- ============================ 08 ONBOARDING ============================ -->
+<!-- ============================ 10 ONBOARDING ============================ -->
 <section id="onboarding">
-  <div class="sec-head"><span class="no">§08</span><h2>Customer Onboarding</h2></div>
+  <div class="sec-head"><span class="no">§10</span><h2>Customer Onboarding</h2></div>
+  <p class="sec-lede">A one-minute, three-step portal form — Company, Shipping, Invoicing — so addresses come from the customer, not from guesswork.</p>
 
   <div class="card">
-    <h3>The portal steps</h3>
+    <h3>The three steps</h3>
     <div class="lbl">What it does</div>
     <ul>
-      <li>New customers confirm their <b>company, shipping and invoicing details</b> through the portal before an order proceeds — so addresses come from the customer, not from guesswork.</li>
-      <li>Completing the <b>shipping</b> step feeds the verified address into open freight forms automatically (see §03).</li>
+      <li><b>1. Company</b> — where the company of record is located.</li>
+      <li><b>2. Shipping</b> — pick an address on file or add a new one, with a ship-to name, optional Attention line, and a shipping contact phone.</li>
+      <li><b>3. Invoicing</b> — the invoicing contact's email and AP phone, plus optional special invoicing instructions ("mail a paper copy", "upload to our AP portal") that land on the order for accounting to see.</li>
+      <li>Returning customers with everything already on file just review and confirm — the form tells them "Everything we need is already on file."</li>
     </ul>
-    <div class="lbl">Good to know</div>
+  </div>
+
+  <div class="card hot">
+    <h3>How it gates the order</h3>
+    <div class="lbl">What it does</div>
     <ul>
-      <li>Onboarding never blocks a payment that's already in motion — mismatches notify the salesperson instead.</li>
+      <li>An order <b>cannot be confirmed</b> — by us or by the customer paying — until onboarding is complete. The Confirm button stays hidden and the portal nudges the customer to finish first.</li>
+      <li>The order form shows a warning banner while details are missing; the customer sees a matching "Complete your order details" banner on their portal page.</li>
+      <li>Completing the <b>shipping</b> step feeds the verified address into open freight forms automatically (see §05) — a zip mismatch notifies the salesperson without blocking anything.</li>
+    </ul>
+    <div class="lbl">How to use it</div>
+    <ul>
+      <li><span class="chip red">Send Onboarding</span> emails the customer their link — available any time, so you can re-send it whenever.</li>
+      <li><span class="chip">Open Onboarding</span> opens the same form for <b>you</b> to fill in live while on the phone with the customer.</li>
     </ul>
   </div>
 </section>
 
-<!-- ============================ 09 PAYMENTS ============================ -->
+<!-- ============================ 11 PAYMENT TERMS ============================ -->
+<section id="terms">
+  <div class="sec-head"><span class="no">§11</span><h2>Payment Terms &amp; Holds</h2></div>
+  <p class="sec-lede">Which terms a customer can be offered, what prepayment terms actually hold, and how to override a hold when the business calls for it.</p>
+
+  <div class="card">
+    <h3>Who can be offered what</h3>
+    <div class="lbl">What it does</div>
+    <ul>
+      <li>Each customer has <span class="chip">Allowed Payment Terms</span> on their contact (visible to accounting users). Empty means the company default for new customers.</li>
+      <li>Each quote shows <span class="chip">Available Payment Terms</span> — the subset offered on <b>this</b> order. The Payment Terms field only accepts terms from that list, and the customer's category feeds it (§02).</li>
+      <li>The first term a customer accepts on a confirmed order <b>locks onto their account</b> — after that, changing their terms takes a Payment Override Manager.</li>
+    </ul>
+  </div>
+
+  <div class="card hot">
+    <h3>Prepay and pre-shipment holds</h3>
+    <div class="lbl">What it does</div>
+    <ul>
+      <li>Terms like <span class="chip">Prepay 100%</span>, <span class="chip">Prepay 50 / 50</span> and <span class="chip">Prepay 20 / 40 / 40 — Engineering</span> carry real gates:</li>
+      <li><b>Prepay portion</b> — the customer must pay it online to confirm the order.</li>
+      <li><b>Pre-shipment portion</b> — the warehouse <b>cannot validate the delivery</b> while money is still owed. The delivery shows a "Waiting for payment" banner with the exact amount outstanding.</li>
+    </ul>
+    <div class="lbl">How to use it</div>
+    <ul>
+      <li>Customers pick their term right on the portal ("Select your preferred payment term") — changing it logs a note on the order. When they go to pay, a two-step window has them confirm the term first, then choose a payment method.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>Overriding a payment hold</h3>
+    <div class="lbl">How to use it</div>
+    <ul>
+      <li>Payment Override Managers see a <span class="path">Other Info → Payment Gate Override</span> group on the order: tick <span class="chip">Bypass Payment Gate</span> and enter the <b>required</b> reason.</li>
+      <li>The override records who granted it and when, posts it to the order's log, and lets the delivery validate despite the outstanding balance.</li>
+    </ul>
+    <div class="lbl">Good to know</div>
+    <ul>
+      <li>Only Payment Override Managers can toggle it, and enabling without a reason is refused — every bypass leaves an audit trail.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============================ 12 PAYMENTS ============================ -->
 <section id="payments">
-  <div class="sec-head"><span class="no">§09</span><h2>Payments</h2></div>
+  <div class="sec-head"><span class="no">§12</span><h2>Paying an Order</h2></div>
+  <p class="sec-lede">The payment window on the portal offers card and ACH, plus wire transfer and — where the terms allow — check.</p>
 
   <div class="card hot">
     <h3>ACH / bank transfer — now instant</h3>
@@ -389,11 +532,25 @@ mark{background:#ffe27a;padding:0 2px}
   </div>
 
   <div class="card">
-    <h3>Wire &amp; check</h3>
+    <h3>Wire transfer</h3>
     <div class="lbl">What it does</div>
     <ul>
-      <li>Wire instructions live behind a <b>PIN-protected page</b> the customer unlocks — instructions aren't sitting in plain emails.</li>
-      <li>Wire and check payments create a <b>confirmation task</b> for accounting to mark when the money lands; orders that must be paid before production or before shipping are held by their payment terms until then.</li>
+      <li>Choosing <b>Wire Transfer</b> in the payment window routes the customer to <b>PIN-protected wire instructions</b> — bank details never sit in a plain email.</li>
+      <li>The order then shows "Awaiting receipt of your wire transfer" to the customer and the same banner internally, and the salesperson plus accounting each get a <b>to-do to confirm the wire arrived</b> before payment is registered.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>Check</h3>
+    <div class="lbl">What it does</div>
+    <ul>
+      <li>On orders with a prepayment term, the payment window also offers <b>Check</b>. The customer sees the mailing address, the order reference to write on the check, and enters the amount they're mailing.</li>
+      <li>Clicking <span class="chip red">I'll Mail the Check</span> marks the order as awaiting the check, emails the customer the mailing instructions, and creates a <b>to-do for the salesperson and accounting</b> to confirm when it arrives and clears.</li>
+    </ul>
+    <div class="lbl">Good to know</div>
+    <ul>
+      <li>The order is <b>not confirmed</b> by the promise — it confirms when the check clears and the payment is registered.</li>
+      <li>The check mailing address lives in <span class="path">Settings → Redline Payment Confirmation</span>.</li>
     </ul>
   </div>
 
@@ -406,9 +563,37 @@ mark{background:#ffe27a;padding:0 2px}
   </div>
 </section>
 
-<!-- ============================ 10 NOTIFICATIONS ============================ -->
+<!-- ============================ 13 INVOICING ============================ -->
+<section id="invoicing">
+  <div class="sec-head"><span class="no">§13</span><h2>Invoicing &amp; Down Payments</h2></div>
+  <p class="sec-lede">Money collected up front books as a down payment; revenue is invoiced when the work ships.</p>
+
+  <div class="card hot">
+    <h3>What happens when a prepaid order confirms</h3>
+    <div class="lbl">What it does</div>
+    <ul>
+      <li>Confirming an order with a prepayment term creates a <b>down-payment invoice</b> automatically: for the amount actually captured (card/ACH), or for the term's prepay percentage when the payment is coming by wire or check.</li>
+      <li>Down payments book to the <b>prepaid-orders account, not revenue</b> — the P&amp;L doesn't recognize the sale before the work is delivered.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>Invoicing the work as it ships</h3>
+    <div class="lbl">How to use it</div>
+    <ul>
+      <li><span class="chip red">Create Stage Invoice</span> on the confirmed order raises the real invoice at fulfillment (or a mid-stage percentage on engineering-terms orders). The wizard previews <b>Will Be Invoiced</b> before you commit.</li>
+      <li>The stage invoice draws down the posted down payment — the customer only ever owes the remainder.</li>
+    </ul>
+    <div class="lbl">Good to know</div>
+    <ul>
+      <li>Invoice emails to customers come from <b>Accounting &lt;accounting@redlinesystems.com&gt;</b> with the Accounting signature, regardless of who clicks send.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============================ 14 NOTIFICATIONS ============================ -->
 <section id="notifications">
-  <div class="sec-head"><span class="no">§10</span><h2>Notifications</h2></div>
+  <div class="sec-head"><span class="no">§14</span><h2>Notifications</h2></div>
 
   <div class="card">
     <h3>Who gets accounting alerts</h3>
@@ -425,9 +610,9 @@ mark{background:#ffe27a;padding:0 2px}
   </div>
 </section>
 
-<!-- ============================ 11 CHANGELOG ============================ -->
+<!-- ============================ 15 CHANGELOG ============================ -->
 <section id="changelog">
-  <div class="sec-head"><span class="no">§11</span><h2>Changelog</h2></div>
+  <div class="sec-head"><span class="no">§15</span><h2>Changelog</h2></div>
   <p class="sec-lede">What changed on each production update, newest first.</p>
 
   <div class="log">
@@ -445,6 +630,7 @@ mark{background:#ffe27a;padding:0 2px}
         <li>Products list: sales description in the Sales app, vendor description in the Purchase app.</li>
         <li>ACH bank verification is instant (bank login) — no more micro-deposit waits.</li>
         <li>Quotations now number from Q06000.</li>
+        <li>This guide expanded to cover the full system: customer categories, credit applications, payment terms &amp; holds, wire/check flows, down-payment invoicing, and onboarding in detail.</li>
       </ul>
     </div>
 
