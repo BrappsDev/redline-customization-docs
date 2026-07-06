@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Redline Systems — Odoo Guide</title>
+<meta name="description" content="How Redline Systems' Odoo customizations work and how to use them.">
+<!-- maintained by the odoo-customization-docs skill; bump on every production push -->
+<meta name="docs-last-documented" content="2026-07-06">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --red:#c8102e; --red-dark:#9c0c24; --ink:#1c1e21; --ink-soft:#4c5157;
+  --paper:#f6f4ef; --card:#fffdf9; --line:#d9d4c9; --line-strong:#b9b2a2;
+  --mono:'IBM Plex Mono',ui-monospace,Consolas,monospace;
+  --disp:'Barlow Condensed','Arial Narrow',sans-serif;
+  --body:'Barlow','Segoe UI',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:84px}
+body{font-family:var(--body);color:var(--ink);background:var(--paper);line-height:1.55;font-size:16px}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.35;z-index:0;
+  background-image:radial-gradient(rgba(28,30,33,.045) 1px,transparent 1px);background-size:22px 22px}
+
+/* ---------- header ---------- */
+header{position:sticky;top:0;z-index:50;background:var(--ink);color:#f3f1ec;border-bottom:4px solid var(--red)}
+.hazard{height:8px;background:repeating-linear-gradient(-45deg,var(--red) 0 14px,#8d0b20 14px 28px)}
+.masthead{display:flex;align-items:baseline;gap:18px;padding:14px 28px;flex-wrap:wrap}
+.masthead .brand{font-family:var(--disp);font-weight:700;font-size:30px;letter-spacing:.06em;text-transform:uppercase}
+.masthead .brand em{color:var(--red);font-style:normal}
+.masthead .sub{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#b8bcc2}
+.masthead .stamp{margin-left:auto;font-family:var(--mono);font-size:11px;color:#8d939b;letter-spacing:.08em}
+
+/* ---------- layout ---------- */
+.wrap{display:grid;grid-template-columns:264px minmax(0,1fr);max-width:1240px;margin:0 auto;position:relative;z-index:1}
+nav{position:sticky;top:84px;align-self:start;height:calc(100vh - 84px);overflow-y:auto;
+  padding:26px 18px 40px 26px;border-right:1px solid var(--line)}
+nav .find{width:100%;font-family:var(--mono);font-size:12px;padding:8px 10px;border:1.5px solid var(--line-strong);
+  background:var(--card);color:var(--ink);outline:none;margin-bottom:20px}
+nav .find:focus{border-color:var(--red)}
+nav .grp{font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-soft);
+  margin:18px 0 6px;padding-bottom:4px;border-bottom:1px solid var(--line)}
+nav a{display:flex;gap:9px;align-items:baseline;padding:5px 6px;color:var(--ink);text-decoration:none;font-size:14.5px;font-weight:500}
+nav a .no{font-family:var(--mono);font-size:10.5px;color:var(--ink-soft);min-width:22px}
+nav a:hover{color:var(--red)}
+nav a.on{background:var(--ink);color:#f3f1ec}
+nav a.on .no{color:var(--red)}
+main{padding:34px 40px 120px;min-width:0}
+
+/* ---------- sections ---------- */
+section{margin-bottom:56px;scroll-margin-top:96px}
+.sec-head{display:flex;align-items:baseline;gap:14px;border-bottom:3px solid var(--ink);padding-bottom:8px;margin-bottom:6px}
+.sec-head .no{font-family:var(--mono);font-size:13px;color:var(--red);font-weight:600;letter-spacing:.08em}
+.sec-head h2{font-family:var(--disp);font-weight:700;font-size:34px;letter-spacing:.03em;text-transform:uppercase}
+.sec-lede{color:var(--ink-soft);margin:10px 0 22px;max-width:70ch}
+
+.card{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--ink);padding:20px 24px 18px;margin-bottom:18px;
+  box-shadow:0 1px 0 rgba(28,30,33,.05)}
+.card h3{font-family:var(--disp);font-size:22px;font-weight:600;letter-spacing:.02em;text-transform:uppercase;margin-bottom:10px}
+.card.hot{border-left-color:var(--red)}
+.lbl{font-family:var(--mono);font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--red);margin:14px 0 5px}
+.lbl:first-of-type{margin-top:2px}
+.card ul{list-style:none;margin:0 0 2px}
+.card li{padding:3px 0 3px 18px;position:relative;max-width:78ch}
+.card li::before{content:"";position:absolute;left:2px;top:.72em;width:8px;height:2px;background:var(--red)}
+.card p{max-width:78ch;margin:4px 0}
+
+.chip{display:inline-block;font-family:var(--mono);font-size:.8em;font-weight:500;background:#eceae3;border:1px solid var(--line-strong);
+  border-bottom-width:2px;border-radius:4px;padding:0 7px;white-space:nowrap}
+.chip.red{background:var(--red);border-color:var(--red-dark);color:#fff}
+.path{font-family:var(--mono);font-size:.82em;color:var(--ink-soft)}
+.note{background:#f3efe2;border:1px solid #e0d9bf;border-left:4px solid #c9a227;padding:10px 14px;font-size:14.5px;margin:12px 0 4px;max-width:78ch}
+.note b{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#8a6d12;display:block;margin-bottom:2px}
+
+/* ---------- changelog ---------- */
+.log{border-left:2px solid var(--line-strong);margin-left:6px;padding-left:26px}
+.log-entry{position:relative;margin-bottom:30px}
+.log-entry::before{content:"";position:absolute;left:-32px;top:6px;width:10px;height:10px;background:var(--red);border-radius:50%}
+.log-date{font-family:var(--mono);font-size:12px;font-weight:600;letter-spacing:.1em;color:var(--red)}
+.log-entry h4{font-family:var(--disp);font-size:19px;font-weight:600;text-transform:uppercase;letter-spacing:.02em;margin:2px 0 6px}
+.log-entry ul{list-style:none}
+.log-entry li{padding:2px 0 2px 16px;position:relative;max-width:80ch}
+.log-entry li::before{content:"";position:absolute;left:0;top:.72em;width:7px;height:2px;background:var(--line-strong)}
+
+footer{border-top:1px solid var(--line);margin-top:30px;padding:18px 0 0;font-family:var(--mono);font-size:11.5px;color:var(--ink-soft);letter-spacing:.05em}
+mark{background:#ffe27a;padding:0 2px}
+.hidden{display:none}
+
+@media (max-width:900px){
+  .wrap{grid-template-columns:1fr}
+  nav{position:static;height:auto;border-right:none;border-bottom:1px solid var(--line);padding:18px 22px}
+  main{padding:26px 22px 90px}
+  .masthead{padding:12px 18px}
+}
+@media print{
+  header,nav{display:none}
+  body::before{display:none}
+  .wrap{display:block}
+  .card{break-inside:avoid}
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="hazard"></div>
+  <div class="masthead">
+    <span class="brand">Red<em>line</em> Systems</span>
+    <span class="sub">Odoo Operations Guide</span>
+    <span class="stamp" id="stamp">Updated 2026-07-06</span>
+  </div>
+</header>
+
+<div class="wrap">
+<nav id="nav">
+  <input class="find" id="find" type="search" placeholder="FILTER… (e.g. freight)" aria-label="Filter the guide">
+  <div class="grp">Sales</div>
+  <a href="#quotes"><span class="no">01</span>Quotes &amp; Order Numbers</a>
+  <a href="#confirmation"><span class="no">02</span>Order Confirmation Emails</a>
+  <div class="grp">Freight</div>
+  <a href="#freight-form"><span class="no">03</span>Freight Forms</a>
+  <a href="#parts-freight"><span class="no">04</span>Parts Freight (UPS Ground)</a>
+  <div class="grp">Fulfillment</div>
+  <a href="#dropship"><span class="no">05</span>Drop Shipping &amp; Purchasing</a>
+  <a href="#warehouse"><span class="no">06</span>Deliveries &amp; Packing Slips</a>
+  <div class="grp">Catalog &amp; Money</div>
+  <a href="#products"><span class="no">07</span>Products</a>
+  <a href="#onboarding"><span class="no">08</span>Customer Onboarding</a>
+  <a href="#payments"><span class="no">09</span>Payments</a>
+  <a href="#notifications"><span class="no">10</span>Notifications</a>
+  <div class="grp">History</div>
+  <a href="#changelog"><span class="no">11</span>Changelog</a>
+</nav>
+
+<main id="main">
+
+<!-- ============================ 01 QUOTES ============================ -->
+<section id="quotes">
+  <div class="sec-head"><span class="no">§01</span><h2>Quotes &amp; Order Numbers</h2></div>
+  <p class="sec-lede">How quotations are numbered, what happens on confirmation, and how revisions work.</p>
+
+  <div class="card">
+    <h3>Numbering</h3>
+    <div class="lbl">What it does</div>
+    <ul>
+      <li>New quotations number from <span class="chip">Q06000</span> upward.</li>
+      <li>When a quote is confirmed it becomes a sales order and gets its permanent <span class="chip">S-number</span> (e.g. S06324). Paperwork generated before confirmation updates itself to the new number where it matters (see Freight Forms).</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>Revising a quote</h3>
+    <div class="lbl">How to use it</div>
+    <ul>
+      <li>Use <span class="chip">Create Revision</span> on a quotation to make a new numbered revision (Q06001-2, -3, …) instead of editing history.</li>
+      <li>On an already-<b>confirmed</b> order, <span class="chip">Create Revision</span> makes a fresh <b>duplicate draft</b> to work in — the confirmed order is left untouched until the new version is ready.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============================ 02 CONFIRMATION ============================ -->
+<section id="confirmation">
+  <div class="sec-head"><span class="no">§02</span><h2>Order Confirmation Emails</h2></div>
+
+  <div class="card">
+    <h3>Who gets emailed, and when</h3>
+    <div class="lbl">What it does</div>
+    <ul>
+      <li>Confirming an order <b>from the back end never emails the customer automatically</b>.</li>
+      <li>When the customer accepts / pays through the portal themselves, the confirmation email <b>does</b> go out automatically — that's what they expect.</li>
+    </ul>
+    <div class="lbl">How to use it</div>
+    <ul>
+      <li>After a back-end confirmation, send the confirmation yourself with the <span class="chip">Send Confirmation</span> button on the order when you're ready.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============================ 03 FREIGHT FORMS ============================ -->
+<section id="freight-form">
+  <div class="sec-head"><span class="no">§03</span><h2>Freight Forms</h2></div>
+  <p class="sec-lede">The freight form replaces the old QuickBooks freight sheet: one place to quote a load with the broker, track his rate, and put the freight charge on the order.</p>
+
+  <div class="card">
+    <h3>Creating the form</h3>
+    <div class="lbl">How to use it</div>
+    <ul>
+      <li>Open any quotation or order and hit <span class="chip">Generate Freight Form</span> — it works from <b>draft on</b>, because freight is usually quoted from just a zip code before the customer commits.</li>
+      <li>The form prefills from the order: ship-to, customer PO, estimated ship date, and one <b>model / serial line per unit</b>.</li>
+      <li>Before the customer has completed onboarding, the contact and zip fields stay <b>blank on purpose</b> — type the zip you're quoting to. Once onboarding verifies the real address, the blanks fill themselves in.</li>
+    </ul>
+    <div class="lbl">Good to know</div>
+    <ul>
+      <li>If the onboarded shipping zip doesn't match the zip the freight was quoted to, the salesperson gets a note on the order — nothing is blocked, it's just a flag to re-check the rate.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>Serial numbers</h3>
+    <div class="lbl">What it does</div>
+    <ul>
+      <li>Serials generate as <span class="chip">RL + MMYY + order number</span> with <b>-1, -2, …</b> per unit (e.g. RL0726S06324-1).</li>
+      <li>Drag rows to reorder (or delete one) and the <b>-1/-2 endings renumber themselves</b> to match the printed order.</li>
+      <li>A serial you've typed by hand is never touched — it keeps its value, and its row still counts toward the numbering.</li>
+      <li>Confirming the order (Q → S rename) re-points the generated serials to the new order number automatically.</li>
+    </ul>
+    <div class="lbl">Good to know</div>
+    <ul>
+      <li><span class="chip">Regenerate Serials</span> throws away the current lines and rebuilds them from the order — use it if the order lines changed a lot.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>The two broker emails</h3>
+    <div class="lbl">How to use it</div>
+    <ul>
+      <li><span class="chip red">Request Quote</span> — asks the broker to rate the load: destination zip, dimensions, weight, the unit list, and any Special Instructions. No PDF attached. Works from a draft quote.</li>
+      <li><span class="chip red">Request Pickup</span> — tells the broker the load is ready: references <b>his own rate-quote number</b> in the subject and attaches the freight form PDF.</li>
+      <li>Both open an email window first — <b>nothing sends until you click Send</b>.</li>
+    </ul>
+    <div class="lbl">Good to know</div>
+    <ul>
+      <li>When the broker replies, his answer lands <b>directly on the freight form's log</b> — no more digging through inboxes.</li>
+      <li>Paste his rate reference in the <span class="chip">Broker Rate Quote</span> field on the sales order (next to Customer PO). It flows to the form and into the pickup email automatically.</li>
+    </ul>
+  </div>
+
+  <div class="card hot">
+    <h3>Freight charge on the order — one line, ever</h3>
+    <div class="lbl">How to use it</div>
+    <ul>
+      <li>Enter the marked-up amount in <span class="chip">Freight Charge</span>, then <span class="chip red">Add Freight Line</span> puts it on the order.</li>
+      <li>After that the form shows <span class="chip">Update Freight Line</span> (re-prices the same line from the current charge) and <span class="chip">Remove Freight Line</span>.</li>
+      <li>On a confirmed order, Remove sets the line to zero instead of deleting it (Odoo protects confirmed lines) — Update brings the same line back.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>Privacy: the customer never sees the freight form</h3>
+    <div class="lbl">What it does</div>
+    <ul>
+      <li>The customer <b>cannot be notified</b> by anything that happens on a freight form — followers are limited to Redline staff, and email suggestions always point at the broker.</li>
+      <li>The broker only receives the two emails you send him — he doesn't see internal notes either.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============================ 04 PARTS FREIGHT ============================ -->
+<section id="parts-freight">
+  <div class="sec-head"><span class="no">§04</span><h2>Parts Freight (UPS Ground)</h2></div>
+
+  <div class="card">
+    <h3>Auto-calculated parts shipping</h3>
+    <div class="lbl">How to use it</div>
+    <ul>
+      <li>On a <b>parts</b> order, set <span class="chip">Shipping Method</span> (UPS Ground vs Air / Expedited) and tick <span class="chip">Oversize / Overweight</span> if it applies, then hit <span class="chip red">Apply Parts Freight</span>.</li>
+      <li>The button calculates the charge from the order subtotal using the agreed percentage rules and maintains one freight line for it.</li>
+    </ul>
+    <div class="lbl">Good to know</div>
+    <ul>
+      <li>Air / expedited is never auto-calculated — quote the carrier's actual cost and add it manually.</li>
+      <li>Parts-freight charges bill to the <b>Freight UPS Ground</b> product; charges from a freight form bill to <b>Flatbed Freight Cost</b> — so the P&amp;L splits them cleanly.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============================ 05 DROPSHIP ============================ -->
+<section id="dropship">
+  <div class="sec-head"><span class="no">§05</span><h2>Drop Shipping &amp; Purchasing</h2></div>
+  <p class="sec-lede">Splitting a confirmed order between the warehouse and vendor drop-shipments, without the warehouse ever shipping something twice.</p>
+
+  <div class="card">
+    <h3>Distribute to Drop Ship</h3>
+    <div class="lbl">How to use it</div>
+    <ul>
+      <li>On a confirmed order, <span class="chip red">Distribute to Drop Ship</span> lists every line still planned from the warehouse. Enter how much of each should drop-ship and pick the vendor.</li>
+      <li>Applying creates <b>draft RFQs grouped by vendor</b> (shipping straight to the customer) for purchasing to review — nothing is sent to a vendor automatically.</li>
+      <li>The distributed quantity is <b>removed from the warehouse delivery entirely</b> — no crossed-out leftovers on the ticket. If the whole delivery ends up empty, it disappears.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>Purchase Products (to our warehouse)</h3>
+    <div class="lbl">How to use it</div>
+    <ul>
+      <li><span class="chip">Purchase Products</span> raises draft RFQs that deliver <b>to Redline</b> — for restocking parts we'll ship ourselves. The customer delivery is untouched.</li>
+      <li>If you flip such a PO to drop-ship afterward (change its Deliver To to the customer), confirming the PO now cleans the warehouse delivery automatically.</li>
+    </ul>
+  </div>
+
+  <div class="card hot">
+    <h3>Check Procurement</h3>
+    <div class="lbl">What it does</div>
+    <ul>
+      <li><span class="chip red">Check Procurement</span> on the order re-syncs the warehouse delivery with reality, <b>both directions</b>:</li>
+      <li>Cancelled a drop-ship RFQ after distributing? The quantity goes <b>back on the delivery</b>.</li>
+      <li>A live drop-ship PO covers something still sitting on the delivery? It comes <b>off</b>.</li>
+      <li>Every fix is summarized in the order's log; a balanced order just says "nothing to fix".</li>
+    </ul>
+    <div class="lbl">Good to know</div>
+    <ul>
+      <li>If something can't be fixed automatically, the salesperson gets a note telling them exactly what to check by hand.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============================ 06 WAREHOUSE ============================ -->
+<section id="warehouse">
+  <div class="sec-head"><span class="no">§06</span><h2>Deliveries &amp; Packing Slips</h2></div>
+
+  <div class="card">
+    <h3>What the warehouse sees</h3>
+    <div class="lbl">What it does</div>
+    <ul>
+      <li>Whatever the salesperson types under a generic part number on the order line (e.g. the description under an <span class="chip">SP302</span> one-off) now <b>prints on the delivery order</b> — the warehouse knows what the item actually is.</li>
+      <li>The packing slip shows the <b>customer PO</b>, prints partner names cleanly (no "Parent, Child" chains), and shows an <b>Attention:</b> line above the street address when one is set on the contact.</li>
+    </ul>
+    <div class="lbl">Good to know</div>
+    <ul>
+      <li>The duplicate title / doubled footer that used to appear on the packing slip is fixed.</li>
+      <li>The Print button on a delivery prints the <b>delivery slip</b> (customer-facing), not the internal operations list.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============================ 07 PRODUCTS ============================ -->
+<section id="products">
+  <div class="sec-head"><span class="no">§07</span><h2>Products</h2></div>
+
+  <div class="card">
+    <h3>The right description in the right app</h3>
+    <div class="lbl">What it does</div>
+    <ul>
+      <li><span class="path">Sales → Products</span> shows the <b>Sales Description</b> column — the customer-facing wording.</li>
+      <li><span class="path">Purchase → Products</span> shows the <b>Purchase Description</b> — the vendor's wording that purchasers work with.</li>
+    </ul>
+    <div class="lbl">Good to know</div>
+    <ul>
+      <li>Both columns can be hidden/shown from the column picker (the little ⚙ at the top-right of the list).</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>Freight products</h3>
+    <div class="lbl">What it does</div>
+    <ul>
+      <li>Three freight service products keep the P&amp;L separated: <b>Flatbed Freight Cost</b> (conveyors / broker rate), <b>LTL Freight</b> (palletized larger parts, manual line), <b>Freight UPS Ground</b> (parts).</li>
+      <li>The system finds them by their <b>internal reference</b> — don't change a freight product's reference without checking with Brapps.</li>
+      <li>Renaming a product's description rewrites how it displays on <b>past</b> orders too — rename with care.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============================ 08 ONBOARDING ============================ -->
+<section id="onboarding">
+  <div class="sec-head"><span class="no">§08</span><h2>Customer Onboarding</h2></div>
+
+  <div class="card">
+    <h3>The portal steps</h3>
+    <div class="lbl">What it does</div>
+    <ul>
+      <li>New customers confirm their <b>company, shipping and invoicing details</b> through the portal before an order proceeds — so addresses come from the customer, not from guesswork.</li>
+      <li>Completing the <b>shipping</b> step feeds the verified address into open freight forms automatically (see §03).</li>
+    </ul>
+    <div class="lbl">Good to know</div>
+    <ul>
+      <li>Onboarding never blocks a payment that's already in motion — mismatches notify the salesperson instead.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============================ 09 PAYMENTS ============================ -->
+<section id="payments">
+  <div class="sec-head"><span class="no">§09</span><h2>Payments</h2></div>
+
+  <div class="card hot">
+    <h3>ACH / bank transfer — now instant</h3>
+    <div class="lbl">What it does</div>
+    <ul>
+      <li>Customers paying by ACH verify their bank account by <b>logging into their bank</b> — verification is instant.</li>
+      <li>The old micro-deposit path (1–2 business days of waiting, then the customer had to come back) is <b>gone</b>.</li>
+    </ul>
+    <div class="lbl">Good to know</div>
+    <ul>
+      <li>A customer whose bank can't be linked online can still pay by card, wire, or check.</li>
+      <li>Once a customer's account is verified it can be saved for next time — repeat orders skip verification entirely.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>Wire &amp; check</h3>
+    <div class="lbl">What it does</div>
+    <ul>
+      <li>Wire instructions live behind a <b>PIN-protected page</b> the customer unlocks — instructions aren't sitting in plain emails.</li>
+      <li>Wire and check payments create a <b>confirmation task</b> for accounting to mark when the money lands; orders that must be paid before production or before shipping are held by their payment terms until then.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>Card fees</h3>
+    <div class="lbl">What it does</div>
+    <ul>
+      <li>Credit-card payments add the card processing fee to the amount, so the charge covers itself. The order total the customer approved stays the order total.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============================ 10 NOTIFICATIONS ============================ -->
+<section id="notifications">
+  <div class="sec-head"><span class="no">§10</span><h2>Notifications</h2></div>
+
+  <div class="card">
+    <h3>Who gets accounting alerts</h3>
+    <div class="lbl">How to use it</div>
+    <ul>
+      <li>Payment / wire / check notifications go to the person set in <span class="path">Settings → search "accounting"</span> → <b>accounting notifications</b> field.</li>
+      <li>Covering for someone? Change that one field to yourself and the alerts follow — change it back when they return.</li>
+    </ul>
+    <div class="lbl">Good to know</div>
+    <ul>
+      <li>Everything else only notifies you if you're the salesperson on the record or a follower of it.</li>
+      <li>To check what's actually been paid on an order list, use the <b>Amount Paid</b> column — it reflects real payment transactions, not a manual checkbox.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============================ 11 CHANGELOG ============================ -->
+<section id="changelog">
+  <div class="sec-head"><span class="no">§11</span><h2>Changelog</h2></div>
+  <p class="sec-lede">What changed on each production update, newest first.</p>
+
+  <div class="log">
+
+    <div class="log-entry">
+      <div class="log-date">2026-07-06 · PENDING PRODUCTION PUSH</div>
+      <h4>Freight round 2, dropship overhaul, instant ACH</h4>
+      <ul>
+        <li>Freight form: serial endings follow row order; one freight line with Add / Update / Remove; special instructions in the quote email; broker replies land on the form; customer can never be notified by the form.</li>
+        <li>Broker Rate Quote field on the sales order writes through to the freight form and pickup email.</li>
+        <li>Parts freight vs. form freight now bill separate products (UPS Ground / Flatbed) for the P&amp;L; shipping-method and oversize fields show proper labels.</li>
+        <li>Drop-shipped lines are removed from the warehouse delivery entirely (both the wizard and the flipped-PO path); new <b>Check Procurement</b> button re-syncs the delivery when a drop-ship RFQ is cancelled — or the reverse.</li>
+        <li>Order-line descriptions under generic part numbers print on the delivery order.</li>
+        <li>Packing slip duplicate title/footer fixed.</li>
+        <li>Products list: sales description in the Sales app, vendor description in the Purchase app.</li>
+        <li>ACH bank verification is instant (bank login) — no more micro-deposit waits.</li>
+        <li>Quotations now number from Q06000.</li>
+      </ul>
+    </div>
+
+    <div class="log-entry">
+      <div class="log-date">2026-07-02</div>
+      <h4>Freight forms round 1</h4>
+      <ul>
+        <li>Freight form available from draft quotes on; editable quoted-zip field; nothing copied from unverified addresses.</li>
+        <li>Serials keep the order number verbatim (RL0726S06324-1) and re-point automatically when a quote becomes an order.</li>
+        <li>Broker email split into Request Quote and Request Pickup; onboarding completion backfills the form and flags zip mismatches to the salesperson.</li>
+      </ul>
+    </div>
+
+    <div class="log-entry">
+      <div class="log-date">Earlier</div>
+      <h4>Foundation</h4>
+      <ul>
+        <li>Customer onboarding portal steps; payment-term gates (prepay / pre-ship) with manager override; PIN-protected wire instructions; card fee pass-through; quote revisions; confirmation-email rework; drop-ship distribution wizard; report cleanups (customer PO on packing slip, name-only addresses, Attention line).</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <footer>REDLINE SYSTEMS · ODOO OPERATIONS GUIDE — maintained by Brapps. Questions or something out of date? Tell Bryan.</footer>
+</section>
+
+</main>
+</div>
+
+<script>
+(function(){
+  // scrollspy
+  var links=[].slice.call(document.querySelectorAll('nav a'));
+  var secs=links.map(function(a){return document.querySelector(a.getAttribute('href'))});
+  var obs=new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      if(e.isIntersecting){
+        links.forEach(function(a){a.classList.toggle('on',a.getAttribute('href')==='#'+e.target.id)});
+      }
+    });
+  },{rootMargin:'-20% 0px -70% 0px'});
+  secs.forEach(function(s){s&&obs.observe(s)});
+
+  // filter
+  var find=document.getElementById('find');
+  var cards=[].slice.call(document.querySelectorAll('.card,.log-entry'));
+  find.addEventListener('input',function(){
+    var q=find.value.trim().toLowerCase();
+    cards.forEach(function(c){
+      c.classList.toggle('hidden',!!q&&c.textContent.toLowerCase().indexOf(q)===-1);
+    });
+    document.querySelectorAll('section').forEach(function(s){
+      var any=!q||[].some.call(s.querySelectorAll('.card,.log-entry'),function(c){return !c.classList.contains('hidden')});
+      s.classList.toggle('hidden',!any);
+    });
+  });
+})();
+</script>
+</body>
+</html>
