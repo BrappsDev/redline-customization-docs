@@ -6,7 +6,7 @@
 <title>Redline Systems — Odoo Guide</title>
 <meta name="description" content="How Redline Systems' Odoo customizations work and how to use them.">
 <!-- maintained by the odoo-customization-docs skill; bump on every production push -->
-<meta name="docs-last-documented" content="2026-07-06">
+<meta name="docs-last-documented" content="2026-07-08">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -108,7 +108,7 @@ mark{background:#ffe27a;padding:0 2px}
   <div class="masthead">
     <span class="brand">Red<em>line</em> Systems</span>
     <span class="sub">Odoo Operations Guide</span>
-    <span class="stamp" id="stamp">Updated 2026-07-06</span>
+    <span class="stamp" id="stamp">Updated 2026-07-08</span>
   </div>
 </header>
 
@@ -330,11 +330,13 @@ mark{background:#ffe27a;padding:0 2px}
     <h3>Auto-calculated parts shipping</h3>
     <div class="lbl">How to use it</div>
     <ul>
-      <li>On a <b>parts</b> order, set <span class="chip">Shipping Method</span> (UPS Ground vs Air / Expedited) and tick <span class="chip">Oversize / Overweight</span> if it applies, then hit <span class="chip red">Apply Parts Freight</span>.</li>
-      <li>The button calculates the charge from the order subtotal using the agreed percentage rules and maintains one freight line for it.</li>
+      <li>On a <b>parts</b> order, set <span class="chip">Shipping Method</span> (UPS Ground vs Air / Expedited) and tick <span class="chip">Oversize / Overweight</span> if it applies, then hit <span class="chip red">Apply Parts Freight</span> — available from the <b>quotation</b> stage on.</li>
+      <li>The button calculates the charge from the order subtotal using the agreed percentage rules and maintains one freight line for it. Press it again — or when a UPS-freight line already exists — and it <b>updates that same line</b> instead of adding a second.</li>
+      <li>Parts freight is only ever added when you click the button — it is <b>no longer added automatically at order confirmation</b>.</li>
     </ul>
     <div class="lbl">Good to know</div>
     <ul>
+      <li>Parts orders don't use the broker freight form, so the <span class="chip">Generate Freight Form</span> button is <b>hidden</b> on them.</li>
       <li>Air / expedited is never auto-calculated — quote the carrier's actual cost and add it manually.</li>
       <li>Parts-freight charges bill to the <b>Freight UPS Ground</b> product; charges from a freight form bill to <b>Flatbed Freight Cost</b> — so the P&amp;L splits them cleanly.</li>
     </ul>
@@ -449,7 +451,7 @@ mark{background:#ffe27a;padding:0 2px}
       <li><b>1. Company</b> — where the company of record is located.</li>
       <li><b>2. Shipping</b> — pick an address on file or add a new one, with a ship-to name, optional Attention line, and a shipping contact phone.</li>
       <li><b>3. Invoicing</b> — the invoicing contact's email and AP phone, plus optional special invoicing instructions ("mail a paper copy", "upload to our AP portal") that land on the order for accounting to see.</li>
-      <li>Returning customers with everything already on file just review and confirm — the form tells them "Everything we need is already on file."</li>
+      <li>Returning customers see their details pre-filled and can accept each step with one click — but onboarding is completed <b>per order</b>, so the form is always presented, even when everything is already on file.</li>
     </ul>
   </div>
 
@@ -457,14 +459,15 @@ mark{background:#ffe27a;padding:0 2px}
     <h3>How it gates the order</h3>
     <div class="lbl">What it does</div>
     <ul>
-      <li>An order <b>cannot be confirmed</b> — by us or by the customer paying — until onboarding is complete. The Confirm button stays hidden and the portal nudges the customer to finish first.</li>
-      <li>The order form shows a warning banner while details are missing; the customer sees a matching "Complete your order details" banner on their portal page.</li>
+      <li>Onboarding is completed <b>per order</b>. Until it's done on that order, the customer's <span class="chip red">Accept &amp; Sign</span> / <span class="chip red">Pay</span> buttons on the portal are <b>disabled</b>, and the back-end Confirm button stays hidden — so an order can't move forward on guessed addresses.</li>
+      <li>The order form shows a warning while details are missing and an <span class="chip">Onboarding complete</span> pill once it's done; the customer sees a matching "Complete your order details" prompt on their portal page.</li>
       <li>Completing the <b>shipping</b> step feeds the verified address into open freight forms automatically (see §05) — a zip mismatch notifies the salesperson without blocking anything.</li>
     </ul>
     <div class="lbl">How to use it</div>
     <ul>
-      <li><span class="chip red">Send Onboarding</span> emails the customer their link — available any time, so you can re-send it whenever.</li>
+      <li><span class="chip red">Send Onboarding</span> emails the customer their link. It <b>hides once onboarding is complete</b> on the order.</li>
       <li><span class="chip">Open Onboarding</span> opens the same form for <b>you</b> to fill in live while on the phone with the customer.</li>
+      <li>Taking the details straight off a customer PO? <span class="chip">Mark Onboarding Complete</span> records the order as onboarded in one click, so you can confirm without walking the form.</li>
     </ul>
   </div>
 </section>
@@ -480,6 +483,7 @@ mark{background:#ffe27a;padding:0 2px}
     <ul>
       <li>Each customer has <span class="chip">Allowed Payment Terms</span> on their contact (visible to accounting users). Empty means the company default for new customers.</li>
       <li>Each quote shows <span class="chip">Available Payment Terms</span> — the subset offered on <b>this</b> order. The Payment Terms field only accepts terms from that list, and the customer's category feeds it (§02).</li>
+      <li>When only <b>one</b> term is available to a customer, it's selected on the order automatically — there's nothing to pick.</li>
       <li>The first term a customer accepts on a confirmed order <b>locks onto their account</b> — after that, changing their terms takes a Payment Override Manager.</li>
     </ul>
   </div>
@@ -490,7 +494,8 @@ mark{background:#ffe27a;padding:0 2px}
     <ul>
       <li>Terms like <span class="chip">Prepay 100%</span>, <span class="chip">Prepay 50 / 50</span> and <span class="chip">Prepay 20 / 40 / 40 — Engineering</span> carry real gates:</li>
       <li><b>Prepay portion</b> — the customer must pay it online to confirm the order.</li>
-      <li><b>Pre-shipment portion</b> — the warehouse <b>cannot validate the delivery</b> while money is still owed. The delivery shows a "Waiting for payment" banner with the exact amount outstanding.</li>
+      <li><b>Pre-shipment portion</b> — the warehouse <b>cannot validate the delivery</b> until the amount due before shipment is covered. The delivery shows a "Waiting for payment" banner with the exact amount outstanding.</li>
+      <li>A <b>captured card payment counts toward releasing the delivery</b> as soon as it settles — you don't have to wait for its down-payment invoice to be reconciled first.</li>
     </ul>
     <div class="lbl">How to use it</div>
     <ul>
@@ -537,6 +542,7 @@ mark{background:#ffe27a;padding:0 2px}
     <ul>
       <li>Choosing <b>Wire Transfer</b> in the payment window routes the customer to <b>PIN-protected wire instructions</b> — bank details never sit in a plain email.</li>
       <li>The order then shows "Awaiting receipt of your wire transfer" to the customer and the same banner internally, and the salesperson plus accounting each get a <b>to-do to confirm the wire arrived</b> before payment is registered.</li>
+      <li>Wire is offered both when paying an <b>order</b> and when paying an <b>invoice</b> — the invoice window runs the same PIN-protected flow and shows the same "awaiting wire" banner.</li>
     </ul>
   </div>
 
@@ -550,6 +556,7 @@ mark{background:#ffe27a;padding:0 2px}
     <div class="lbl">Good to know</div>
     <ul>
       <li>The order is <b>not confirmed</b> by the promise — it confirms when the check clears and the payment is registered.</li>
+      <li>Check is offered on both the <b>order</b> and <b>invoice</b> payment windows wherever the term allows it.</li>
       <li>The check mailing address lives in <span class="path">Settings → Redline Payment Confirmation</span>.</li>
     </ul>
   </div>
@@ -558,7 +565,18 @@ mark{background:#ffe27a;padding:0 2px}
     <h3>Card fees</h3>
     <div class="lbl">What it does</div>
     <ul>
-      <li>Credit-card payments add the card processing fee to the amount, so the charge covers itself. The order total the customer approved stays the order total.</li>
+      <li>The card processing fee is added <b>only to credit-card payments</b> — ACH / bank transfers, wire, and check are never surcharged.</li>
+      <li>The fee notice appears in the payment window <b>only when the card method is selected</b>; pick ACH or another method and it disappears.</li>
+      <li>The order total the customer approved stays the order total — the fee rides on top of the card charge.</li>
+    </ul>
+  </div>
+
+  <div class="card hot">
+    <h3>ACH that's still clearing</h3>
+    <div class="lbl">What it does</div>
+    <ul>
+      <li>An ACH payment can take a few business days to clear. When a customer pays by ACH, the order <b>confirms right away</b> and its down-payment invoice is created, but the order and the invoice both show a <span class="chip">Payment pending</span> flag.</li>
+      <li>The warehouse <b>can't ship while it's pending</b>. Once the funds clear, the payment applies to the invoice automatically and the delivery releases.</li>
     </ul>
   </div>
 </section>
@@ -574,6 +592,7 @@ mark{background:#ffe27a;padding:0 2px}
     <ul>
       <li>Confirming an order with a prepayment term creates a <b>down-payment invoice</b> automatically: for the amount actually captured (card/ACH), or for the term's prepay percentage when the payment is coming by wire or check.</li>
       <li>Down payments book to the <b>prepaid-orders account, not revenue</b> — the P&amp;L doesn't recognize the sale before the work is delivered.</li>
+      <li>A <b>pending ACH</b> still confirms the order and creates the down-payment invoice; both carry a <span class="chip">Payment pending</span> flag until the funds clear (see §12).</li>
     </ul>
   </div>
 
@@ -581,12 +600,23 @@ mark{background:#ffe27a;padding:0 2px}
     <h3>Invoicing the work as it ships</h3>
     <div class="lbl">How to use it</div>
     <ul>
-      <li><span class="chip red">Create Stage Invoice</span> on the confirmed order raises the real invoice at fulfillment (or a mid-stage percentage on engineering-terms orders). The wizard previews <b>Will Be Invoiced</b> before you commit.</li>
-      <li>The stage invoice draws down the posted down payment — the customer only ever owes the remainder.</li>
+      <li><span class="chip red">Create Stage Invoice</span> on the confirmed order raises the next invoice. Until the order is <b>fully delivered</b> it opens as a <b>down payment</b>; once everything has shipped it opens as the <b>real invoice</b> that books the revenue.</li>
+      <li>The down-payment percentage is <b>pre-filled from the term's next installment</b> — e.g. on a 60 / 20 / 20 term, after the 60 the next stage defaults to 20. The wizard previews <b>Will Be Invoiced</b> before you commit.</li>
+      <li>The stage invoice draws down the posted down payments — the customer only ever owes the remainder.</li>
     </ul>
     <div class="lbl">Good to know</div>
     <ul>
       <li>Invoice emails to customers come from <b>Accounting &lt;accounting@redlinesystems.com&gt;</b> with the Accounting signature, regardless of who clicks send.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>Paying an invoice</h3>
+    <div class="lbl">What it does</div>
+    <ul>
+      <li>The button in an invoice email reads <span class="chip red">View &amp; Pay</span>, taking the customer straight to the online payment page.</li>
+      <li>An invoice is paid <b>in full</b> — the payment window shows a single amount, never a partial "next installment" split.</li>
+      <li>Card, ACH, <b>wire, and check</b> are all offered on the invoice payment window (wire/check where the term allows). An invoice awaiting a wire/check, or with a clearing ACH, shows the matching banner (see §12).</li>
     </ul>
   </div>
 </section>
@@ -618,7 +648,26 @@ mark{background:#ffe27a;padding:0 2px}
   <div class="log">
 
     <div class="log-entry">
-      <div class="log-date">2026-07-06 · PENDING PRODUCTION PUSH</div>
+      <div class="log-date">2026-07-08 · PENDING PRODUCTION PUSH</div>
+      <h4>Onboarding gate, ACH pending, invoice payments, card-only fees</h4>
+      <ul>
+        <li>Onboarding is now completed <b>per order</b>: the customer's Accept &amp; Sign / Pay buttons stay disabled (and the back-end Confirm is hidden) until it's done on that order. The form always shows, even for returning customers. New <b>Onboarding complete</b> pill, the Send Onboarding button hides once done, and a <b>Mark Onboarding Complete</b> one-click bypass for orders taken off a customer PO.</li>
+        <li>Paying by <b>ACH</b>: the order confirms and its down-payment invoice is created immediately, both showing a <b>Payment pending</b> flag; the delivery is held until the funds clear, then the payment applies and the delivery releases.</li>
+        <li><b>Wire and Check</b> are now offered on the <b>invoice</b> payment window too (not just orders), and invoices show the awaiting-wire/check and pending-ACH banners.</li>
+        <li>Invoice emails: the button now reads <b>View &amp; Pay</b>; invoices are paid in full (no partial "next installment" split).</li>
+        <li>The <b>card processing fee is card-only</b> — ACH/bank, wire, and check are never surcharged — and the fee notice only appears when the card method is selected.</li>
+        <li>Stage invoices open as a <b>down payment until the order is fully delivered</b> (real invoice after), with the percentage pre-filled from the term's next installment.</li>
+        <li>A captured card payment counts toward releasing a delivery as soon as it settles.</li>
+        <li>When only one payment term is available to a customer, it's selected automatically.</li>
+        <li>Parts freight is added <b>only via the Apply Parts Freight button</b> (available from quotation), never automatically at confirmation; the broker Generate Freight Form button is hidden on parts orders.</li>
+        <li>The "awaiting wire/check" banner clears once the order is confirmed; requesting a wire PIN twice quickly no longer sends two emails.</li>
+        <li>Fixed an error that could block the invoice online-payment page.</li>
+        <li>Orders list carries a payment-status badge; down-payment invoices show a payment-progress note.</li>
+      </ul>
+    </div>
+
+    <div class="log-entry">
+      <div class="log-date">2026-07-06</div>
       <h4>Freight round 2, dropship overhaul, instant ACH</h4>
       <ul>
         <li>Freight form: serial endings follow row order; one freight line with Add / Update / Remove; special instructions in the quote email; broker replies land on the form; customer can never be notified by the form.</li>
