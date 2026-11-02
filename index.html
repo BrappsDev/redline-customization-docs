@@ -6,7 +6,7 @@
 <title>Redline Systems — Odoo Guide</title>
 <meta name="description" content="How Redline Systems' Odoo customizations work and how to use them.">
 <!-- maintained by the odoo-customization-docs skill; bump on every production push -->
-<meta name="docs-last-documented" content="2026-07-13">
+<meta name="docs-last-documented" content="2026-11-02">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -108,7 +108,7 @@ mark{background:#ffe27a;padding:0 2px}
   <div class="masthead">
     <span class="brand">Red<em>line</em> Systems</span>
     <span class="sub">Odoo Operations Guide</span>
-    <span class="stamp" id="stamp">Updated 2026-07-13</span>
+    <span class="stamp" id="stamp">Updated 2026-11-02</span>
   </div>
 </header>
 
@@ -133,8 +133,10 @@ mark{background:#ffe27a;padding:0 2px}
   <a href="#payments"><span class="no">12</span>Paying an Order</a>
   <a href="#invoicing"><span class="no">13</span>Invoicing &amp; Down Payments</a>
   <a href="#notifications"><span class="no">14</span>Notifications</a>
+  <div class="grp">Tools</div>
+  <a href="#assistant"><span class="no">15</span>AI Assistant (MCP Server)</a>
   <div class="grp">History</div>
-  <a href="#changelog"><span class="no">15</span>Changelog</a>
+  <a href="#changelog"><span class="no">16</span>Changelog</a>
 </nav>
 
 <main id="main">
@@ -693,12 +695,46 @@ mark{background:#ffe27a;padding:0 2px}
   </div>
 </section>
 
-<!-- ============================ 15 CHANGELOG ============================ -->
+<!-- ============================ 15 ASSISTANT ============================ -->
+<section id="assistant">
+  <div class="sec-head"><span class="no">§15</span><h2>AI Assistant (MCP Server)</h2></div>
+
+  <div class="card">
+    <h3>Connecting Claude or ChatGPT: the MCP Server app</h3>
+    <div class="lbl">What it does</div>
+    <ul>
+      <li>Lets Claude or ChatGPT answer questions about your Odoo records in plain English, for example "total confirmed sales by month this year". The assistant signs in as you and only ever sees what your own Odoo user can see.</li>
+      <li>The <b>MCP Server</b> app on the Odoo home screen opens on a dashboard showing whether the connection is switched on, who is connected, which kinds of records the assistant may read, which tools it may use, and how many requests it made this week.</li>
+      <li>The tools list marks each one <span class="chip">Read-only</span>, <span class="chip">Changes data</span> or <span class="chip">Off</span>, so you can see at a glance what the assistant is allowed to do.</li>
+    </ul>
+    <div class="lbl">How to use it</div>
+    <ul>
+      <li>Open <b>MCP Server</b> and choose <span class="chip red">Connect an assistant</span> (or the <b>Connect</b> menu). Copy the server address and follow the steps for your assistant: Claude, ChatGPT, Claude Code or another client.</li>
+      <li>When the assistant sends you to Odoo, check that the page names the assistant's own website (for example claude.ai) before you click <span class="chip">Allow</span>.</li>
+      <li><b>Activity</b> lists every request your assistant made through your account.</li>
+    </ul>
+    <div class="lbl">Good to know</div>
+    <ul>
+      <li>You only see the app if your Odoo user has been given assistant access. Until someone connects, the dashboard shows the connection steps instead of an empty screen.</li>
+      <li>The <b>Configuration</b> menu (tools, readable records, connected assistants) is for administrators.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============================ 16 CHANGELOG ============================ -->
 <section id="changelog">
-  <div class="sec-head"><span class="no">§15</span><h2>Changelog</h2></div>
+  <div class="sec-head"><span class="no">§16</span><h2>Changelog</h2></div>
   <p class="sec-lede">What changed on each production update, newest first.</p>
 
   <div class="log">
+
+    <div class="log-entry">
+      <div class="log-date">2026-11-02 · PENDING PRODUCTION PUSH</div>
+      <h4>AI assistant connection (MCP Server app)</h4>
+      <ul>
+        <li>New <b>MCP Server</b> app: connect Claude or ChatGPT to ask questions about your Odoo records. Its dashboard shows who is connected and what the assistant may read; the <b>Connect</b> page walks you through setup (§15).</li>
+      </ul>
+    </div>
 
     <div class="log-entry">
       <div class="log-date">2026-07-13</div>
